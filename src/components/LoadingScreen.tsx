@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 
 function getTime() {
-    var today = new Date()
+    const today = new Date()
     return today.getHours().toLocaleString('en-US', {
         minimumIntegerDigits: 2,
         useGrouping: false
@@ -14,8 +14,8 @@ function getTime() {
     });
 }
 
-export const LoadingScreen = ({loaded, onLoad}: { loaded: boolean, onLoad: Function }) => {
-    var [time, setTime] = useState(getTime);
+export const LoadingScreen = ({loading, onLoad}: { loading: boolean, onLoad: Function }) => {
+    const [time, setTime] = useState(getTime);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -35,7 +35,7 @@ export const LoadingScreen = ({loaded, onLoad}: { loaded: boolean, onLoad: Funct
     return (
         <div className={`overlay ${bodyLoaded}`}>
             <div className="overlayDoor"></div>
-            <div className={`overlayContent ${loaded ? "is-loading" : "content-loaded"}`}>
+            <div className={`overlayContent ${loading ? "is-loading" : "content-loaded"}`}>
                 <div className="loader">
                     <div className="inner"></div>
                 </div>

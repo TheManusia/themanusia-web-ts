@@ -19,10 +19,44 @@ function removeComma(number: any) {
     return `${twoDigitsNumber(parseInt(number))}`;
 }
 
-export const Content = ({onPause, title, duration, currentTime,}:
-                            { onPause: Function, title?: string, duration: number, currentTime: number }) => {
+const defaultData = [
+    {
+        url: 'https://github.com/TheManusia',
+        text: 'GitHub'
+    },
+    {
+        url: 'https://twitter.com/TheManusia_',
+        text: 'Twitter'
+    },
+    {
+        url: "https://instagram.com/ian_269",
+        text: "Instagram"
+    },
+    {
+        url: "https://discord.com/users/320376899069149184",
+        text: "Discord"
+    },
+    {
+        url: "https://steamcommunity.com/id/themanusia",
+        text: "Steam"
+    },
+    {
+        url: "https://osu.ppy.sh/u/TheManusia",
+        text: "osu!"
+    },
+]
+
+export const Content = ({onPause, title, duration, currentTime, socmeds}:
+                            { onPause: Function, title?: string, duration: number, currentTime: number, socmeds: any[] }) => {
     const [time, setTime] = useState(getTime);
     const [play, setPlay] = useState(false);
+    const [buttonData, setButtonData] = useState(defaultData);
+
+    useEffect(() => {
+        setButtonData(socmeds.map((socmed) => {
+            return {url: socmed.link, text: socmed.text}
+        }));
+    }, [socmeds]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -30,9 +64,9 @@ export const Content = ({onPause, title, duration, currentTime,}:
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [time]);
 
-    const timelapse =`${removeComma(currentTime / 60)}:${removeComma(currentTime % 60)} / ${removeComma(duration / 60)}:${removeComma(duration % 60)}`;
+    const timelapse = `${removeComma(currentTime / 60)}:${removeComma(currentTime % 60)} / ${removeComma(duration / 60)}:${removeComma(duration % 60)}`;
 
     return (
         <div className="text-white">
@@ -42,12 +76,11 @@ export const Content = ({onPause, title, duration, currentTime,}:
                     <h1 className="text-4xl font-bold mb-0">TheManusia</h1>
                     <h1 className="text-xl mt-0">{time}</h1>
                     <div className="col-auto">
-                        <Button url="https://github.com/TheManusia" text="Github"/>
-                        <Button url="https://twitter.com/TheManusia_" text="Twitter"/>
-                        <Button url="https://instagram.com/ian_269" text="Instagram"/>
-                        <Button url="https://discord.com/users/320376899069149184" text="Discord"/>
-                        <Button url="https://steamcommunity.com/id/themanusia" text="Steam"/>
-                        <Button url="https://osu.ppy.sh/u/TheManusia" text="osu!"/>
+                        {
+                            buttonData.map((data) => {
+                                return <Button text={data.text} url={data.url}/>
+                            })
+                        }
                     </div>
                 </div>
             </div>
