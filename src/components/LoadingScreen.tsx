@@ -1,13 +1,25 @@
 import {useState, useEffect} from "react";
 
-export const LoadingScreen = ({loaded, onLoad}: { loaded: boolean, onLoad: Function }) => {
+function getTime() {
     var today = new Date()
-    var [time, setTime] = useState(today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds());
+    return today.getHours().toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+    }) + ':' + today.getMinutes().toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+    }) + ':' + today.getSeconds().toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+    });
+}
+
+export const LoadingScreen = ({loaded, onLoad}: { loaded: boolean, onLoad: Function }) => {
+    var [time, setTime] = useState(getTime);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            var today = new Date()
-            setTime(today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds());
+            setTime(getTime);
         }, 1000);
         return () => clearInterval(interval);
     }, []);
