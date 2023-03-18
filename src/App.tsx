@@ -2,6 +2,7 @@ import {useState} from "react";
 import YouTubeBackground from "./components/YoutubeBackground";
 import {LoadingScreen} from "./components/LoadingScreen";
 import {YouTubePlayer} from "react-youtube";
+import {Content} from "./components/Content";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -18,13 +19,21 @@ function App() {
     player.playVideo();
   }
 
+  const onPause = () => {
+      if (player.getPlayerState() === 1) {
+          player.pauseVideo();
+      } else {
+          player.playVideo();
+      }
+
+      return player.getPlayerState() === 1;
+  }
+
   return (
       <div className="App">
         <LoadingScreen loaded={loading} onLoad={onLoad}/>
         <YouTubeBackground onReady={(event: any) => onReady(event)}/>
-        <div className="relative z-10 text-white">
-            <h1>Ambatunat</h1>
-        </div>
+        <Content onPause={onPause} />
       </div>
   );
 }
