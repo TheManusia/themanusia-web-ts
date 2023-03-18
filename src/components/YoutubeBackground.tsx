@@ -1,7 +1,7 @@
 import YouTube from 'react-youtube';
 import {useState} from "react";
 
-function YoutubeBackground({onReady}: { onReady: Function }) {
+function YoutubeBackground({onReady, onStateChanged}: { onReady: Function, onStateChanged: Function }) {
     const videoIds = ['BnkhBwzBqlQ', "_YnwnxSE2UA", "fbJiRfIp_cU"];
     const videoId = videoIds[0];
     const [paused, setPaused] = useState(false);
@@ -30,7 +30,8 @@ function YoutubeBackground({onReady}: { onReady: Function }) {
         event.target.loadVideoById(videoIds[videoNumber]);
     }
 
-    const onStateChanged = (event: any) => {
+    const onStateChange = (event: any) => {
+        onStateChanged(event);
         if (event.data === 1) {
             setPaused(false);
         } else {
@@ -43,7 +44,7 @@ function YoutubeBackground({onReady}: { onReady: Function }) {
             <YouTube videoId={videoId} opts={opts}
                      className="absolute top-0 left-0 w-full h-screen z-0 aspect-[4/3]"
                      onEnd={onEnd} onReady={(event) => onReady(event)}
-                     onStateChange={(event) => onStateChanged(event)}/>
+                     onStateChange={(event) => onStateChange(event)}/>
             <div
                 className={`absolute top-0 left-0 w-full h-screen z-0 bg-black ${paused ? "opacity-100" : "opacity-0"}`}/>
             <div className="absolute top-0 left-0 w-full h-full z-0 bg-black opacity-75"/>

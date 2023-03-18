@@ -2,29 +2,37 @@ import {useState, useEffect} from "react";
 import {Button} from "./Button";
 
 function getTime() {
-    var today = new Date()
-    return today.getHours().toLocaleString('en-US', {
-        minimumIntegerDigits: 2,
-        useGrouping: false
-    }) + ':' + today.getMinutes().toLocaleString('en-US', {
-        minimumIntegerDigits: 2,
-        useGrouping: false
-    }) + ':' + today.getSeconds().toLocaleString('en-US', {
+    const today = new Date()
+    return twoDigitsNumber(today.getHours())
+        + ':' + twoDigitsNumber(today.getMinutes())
+        + ':' + twoDigitsNumber(today.getSeconds());
+}
+
+function twoDigitsNumber(number: any) {
+    return number.toLocaleString('en-US', {
         minimumIntegerDigits: 2,
         useGrouping: false
     });
 }
 
-export const Content = ({onPause}: { onPause: Function }) => {
+function removeComma(number: any) {
+    return `${twoDigitsNumber(parseInt(number))}`;
+}
+
+export const Content = ({onPause, title, duration, currentTime,}:
+                            { onPause: Function, title?: string, duration: number, currentTime: number }) => {
     const [time, setTime] = useState(getTime);
     const [play, setPlay] = useState(false);
 
     useEffect(() => {
-            const interval = setInterval(() => {
-                setTime(getTime);
-            }, 1000);
-            return () => clearInterval(interval);
-        }, []);
+        const interval = setInterval(() => {
+            setTime(getTime);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const timelapse =`${removeComma(currentTime / 60)}:${removeComma(currentTime % 60)} / ${removeComma(duration / 60)}:${removeComma(duration % 60)}`;
 
     return (
         <div className="text-white">
@@ -43,8 +51,18 @@ export const Content = ({onPause}: { onPause: Function }) => {
                     </div>
                 </div>
             </div>
-            <div className="absolute z-30 text-white text-base pause p-5"
-                 onClick={() => setPlay(onPause())}>[ {play ? "play" : "pause"} ]
+            <div className="absolute z-30 text-white text-base p-5">
+                <div className="pause" onClick={() => setPlay(onPause())}>
+                    [ {play ? "play" : "pause"} ]
+                </div>
+            </div>
+            <div className="absolute bottom-0 left-0 p-5">
+                <div className="text-base text-white">
+                    {currentTime ? `[ ${timelapse} ]` : ""}
+                </div>
+                <div className="text-base text-white">
+                    {title ? `[ ${title} ]` : ""}
+                </div>
             </div>
         </div>
     )
