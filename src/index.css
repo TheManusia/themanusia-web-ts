@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
 }
 body.loaded {
     overflow-y: auto;
@@ -66,7 +67,6 @@ body.loaded {
     margin: 50px auto 0;
     cursor: pointer;
     color: #fff;
-    font-family: "Nunito", sans-serif;
     font-weight: 700;
     padding: 12px 0;
     border: 2px solid #fff;
@@ -162,8 +162,6 @@ a {
 }
 
 .content {
-    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka,
-    "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
     font-size: 2rem;
     font-weight: 400;
     display: inline-block;
